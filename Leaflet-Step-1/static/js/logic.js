@@ -2,13 +2,12 @@ var earthquakesURL = "https://earthquake.usgs.gov/earthquakes/feed/v1.0/summary/
 
  
 
-// Create earthquake layerGroup
+
 
 var earthquakes = L.layerGroup();
 
  
 
-// Create tile layer
 
 var grayscaleMap = L.tileLayer("https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_token={accessToken}", {
 
@@ -28,7 +27,6 @@ var grayscaleMap = L.tileLayer("https://api.mapbox.com/styles/v1/{id}/tiles/{z}/
 
  
 
-// Create the map, giving it the grayscaleMap and earthquakes layers to display on load
 
 var myMap = L.map("mapid", {
 
@@ -48,7 +46,7 @@ var myMap = L.map("mapid", {
 
 d3.json(earthquakesURL, function(earthquakeData) {
 
-  // Determine the marker size by magnitude
+  
 
   function markerSize(magnitude) {
 
@@ -56,7 +54,7 @@ d3.json(earthquakesURL, function(earthquakeData) {
 
   };
 
-  // Determine the marker color by depth
+  
 
   function chooseColor(depth) {
 
@@ -92,9 +90,7 @@ d3.json(earthquakesURL, function(earthquakeData) {
 
  
 
-  // Create a GeoJSON layer containing the features array
-
-  // Each feature a popup describing the place and time of the earthquake
+  
 
   L.geoJSON(earthquakeData, {
 
@@ -102,7 +98,7 @@ d3.json(earthquakesURL, function(earthquakeData) {
 
       return L.circleMarker(latlng,
 
-        // Set the style of the markers based on properties.mag
+        
 
         {
 
@@ -134,13 +130,13 @@ d3.json(earthquakesURL, function(earthquakeData) {
 
   }).addTo(earthquakes);
 
-  // Sending our earthquakes layer to the createMap function
+
 
   earthquakes.addTo(myMap);
 
  
 
-    // Add legend
+    
 
   var legend = L.control({position: "bottomright"});
 
