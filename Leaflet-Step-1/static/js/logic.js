@@ -1,10 +1,11 @@
+console.log("working")
 var earthquakesURL = "https://earthquake.usgs.gov/earthquakes/feed/v1.0/summary/all_week.geojson";
 
  
 
 
 
-var earthquakes = L.layerGroup();
+//var earthquakes = L.layerGroup();
 
  
 
@@ -25,26 +26,27 @@ var grayscaleMap = L.tileLayer("https://api.mapbox.com/styles/v1/{id}/tiles/{z}/
 
 });
 
- 
+ console.log(grayscaleMap)
 
 
 var myMap = L.map("mapid", {
 
   center: [
 
-    37.09, -95.71
+    40.09, -95.71
 
   ],
 
-  zoom: 2,
+  zoom: 3
 
-  layers: [grayscaleMap, earthquakes]
+  //layers: [grayscaleMap, earthquakes]
 
 });
 
- 
+grayscaleMap.addTo(myMap); 
 
-d3.json(earthquakesURL, function(earthquakeData) {
+d3.json(earthquakesURL).then(function(earthquakeData) {
+  console.log(earthquakeData);
 
   
 
@@ -88,7 +90,23 @@ d3.json(earthquakesURL, function(earthquakeData) {
 
   }
 
- 
+  function stylemap(feature){
+    return {
+
+            radius: markerSize(feature.properties.mag),
+  
+            fillColor: chooseColor(feature.geometry.coordinates[2]),
+  
+            fillOpacity: 0.7,
+  
+            color: "black",
+  
+            stroke: true,
+  
+            weight: 0.5
+  
+      };
+  }
 
   
 
@@ -96,29 +114,14 @@ d3.json(earthquakesURL, function(earthquakeData) {
 
     pointToLayer: function (feature, latlng) {
 
-      return L.circleMarker(latlng,
+      return L.circleMarker(latlng);
+    },
 
         
 
-        {
+    style: stylemap,
 
-          radius: markerSize(feature.properties.mag),
-
-          fillColor: chooseColor(feature.geometry.coordinates[2]),
-
-          fillOpacity: 0.7,
-
-          color: "black",
-
-          stroke: true,
-
-          weight: 0.5
-
-        }
-
-      );
-
-    },
+   
 
     onEachFeature: function(feature, layer) {
 
@@ -128,11 +131,11 @@ d3.json(earthquakesURL, function(earthquakeData) {
 
     }
 
-  }).addTo(earthquakes);
+  }).addTo(myMap);
 
 
 
-  earthquakes.addTo(myMap);
+  //earthquakes.addTo(myMap);
 
  
 
@@ -148,13 +151,13 @@ d3.json(earthquakesURL, function(earthquakeData) {
 
    
 
-    div.innerHTML += "<h3 style='text-align: center'>Depth</h3>"
+    //div.innerHTML += "<h3 style='text-align: center'>Depth</h3>"
 
   for (var i =0; i < depth.length; i++) {
 
     div.innerHTML +=
 
-    '<i style="background:' + chooseColor(depth[i] + 1) + '"></i> ' +
+    '<i style="background: ' + chooseColor(depth[i] ) + '"></i> ' +
 
         depth[i] + (depth[i + 1] ? '&ndash;' + depth[i + 1] + '<br>' : '+');
 
